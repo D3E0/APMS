@@ -1,0 +1,45 @@
+body {
+    /*background-color: #eee;*/
+    margin-top: 50px;
+}
+
+.thumb {
+    width: 100px;
+    position: relative;;
+    margin: auto;
+    border-radius: 100%;
+}
+
+#box {
+    perspective: 1000px;
+    /*border: 2px solid #5FB878;*/
+    transform-style: preserve-3d;
+    transform: rotateX(0deg) rotateY(0deg);
+    margin-top: 100px; /*(250px-100px)*/
+}
+
+#img {
+    height: 300px;
+    -webkit-animation: myFirst 10s infinite linear; /* Safari 和 Chrome */
+}
+
+@-webkit-keyframes myFirst {
+    0% {
+        transform: rotateY(0deg) rotateX(0deg)
+    }
+    10% {
+        transform: rotateY(30deg) rotateX(0deg)
+    }
+    30% {
+        transform: rotateY(-30deg) rotateX(0deg)
+    }
+    60% {
+        transform: rotateY(0deg) rotateX(30deg)
+    }
+    90% {
+        transform: rotateY(0deg) rotateX(-30deg)
+    }
+    100% {
+        transform: rotateY(0deg) rotateX(0deg)
+    }
+}

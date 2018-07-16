@@ -1,0 +1,12 @@
+
+.father {
+    margin-left:100px ;
+}
+
+.son {
+    margin-top:30% ;
+}
+.wrong{
+    border: solid red;
+    border-width: 2px;
+}
