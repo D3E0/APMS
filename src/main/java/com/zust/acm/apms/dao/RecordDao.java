@@ -17,6 +17,9 @@ public interface RecordDao {
      */
     Integer addRecord(RecordEntity record);
 
+    List getRecordList(Timestamp time);
+
+
     /**
      * 判断是否有签到记录
      * ("SELECT COUNT(*) FROM record AS r WHERE " +

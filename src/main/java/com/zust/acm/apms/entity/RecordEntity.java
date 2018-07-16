@@ -1,34 +1,36 @@
 package com.zust.acm.apms.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "record", schema = "apms")
-@IdClass(RecordEntityPK.class)
 public class RecordEntity {
-    private String userId;
+    private UserEntity user;
     private Timestamp time;
     private String ip;
     private String recordId;
 
-    public RecordEntity(String userId, Timestamp time, String ip) {
-        this.userId = userId;
+    public RecordEntity(){
+
+    }
+
+    public RecordEntity(UserEntity user, Timestamp time, String ip) {
+        this.user = user;
         this.time = time;
         this.ip = ip;
     }
 
-    public RecordEntity(){
-
-    }
-    @Basic
-    @Column(name = "userId")
-    public String getUserId() {
-        return userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Basic
@@ -51,35 +53,9 @@ public class RecordEntity {
         this.ip = ip;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        RecordEntity that = (RecordEntity) o;
-
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) {
-            return false;
-        }
-        if (time != null ? !time.equals(that.time) : that.time != null) {
-            return false;
-        }
-        return ip != null ? ip.equals(that.ip) : that.ip == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (ip != null ? ip.hashCode() : 0);
-        return result;
-    }
-
     @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "recordId")
     public String getRecordId() {
         return recordId;

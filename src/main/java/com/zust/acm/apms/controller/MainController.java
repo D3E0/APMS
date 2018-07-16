@@ -2,7 +2,9 @@ package com.zust.acm.apms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zust.acm.apms.dao.RecordDao;
+import com.zust.acm.apms.dao.UserDao;
 import com.zust.acm.apms.entity.RecordEntity;
+import com.zust.acm.apms.entity.UserEntity;
 import com.zust.acm.apms.manager.FaceManager;
 import com.zust.acm.apms.utils.Base64Util;
 import com.zust.acm.apms.utils.FileUtil;
@@ -28,11 +30,13 @@ public class MainController {
 
     private final FaceManager faceManager;
     private final RecordDao recordDao;
+    private final UserDao userDao;
 
     @Autowired
-    public MainController(FaceManager faceManager, RecordDao recordDao) {
+    public MainController(FaceManager faceManager, RecordDao recordDao, UserDao userDao) {
         this.faceManager = faceManager;
         this.recordDao = recordDao;
+        this.userDao = userDao;
     }
 
     @GetMapping
@@ -82,12 +86,17 @@ public class MainController {
         if ("IN".equals(status) || "OUT".equals(status)) {
             imgStr = imgStr.replaceFirst("data:image/jpeg;base64,", "");
             String id = faceManager.searchFace(imgStr);
+            if (id != null) {
+                System.out.println("user exist " + id);
+            } else {
+                System.out.println("user not exist");
+            }
             //存在相应用户
             if (id != null) {
 
                 //判断是否今日有签到记录
                 if (recordDao.verifyRecordByUserIdInDayTime(new Timestamp(now), id) < 1) {
-                    recordDao.addRecord(new RecordEntity(id, new Timestamp(now), request.getRemoteAddr()));
+                    recordDao.addRecord(new RecordEntity(userDao.(id), new Timestamp(now), request.getRemoteAddr()));
                 }
                 //判断是否今日有签退记录
                 if (recordDao.verifyRecordByUserIdInDayTime(new Timestamp(now), id) >= 1) {

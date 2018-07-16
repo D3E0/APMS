@@ -3,14 +3,13 @@ package com.zust.acm.apms.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user", schema = "apms", catalog = "")
+@Table(name = "user", schema = "apms")
 public class UserEntity {
     private String userId;
     private String userName;
     private String gender;
     private String institute;
     private String profession;
-    private String className;
 
     @Id
     @Column(name = "userId")
@@ -62,15 +61,6 @@ public class UserEntity {
         this.profession = profession;
     }
 
-    @Basic
-    @Column(name = "className")
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -84,7 +74,6 @@ public class UserEntity {
         if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
         if (institute != null ? !institute.equals(that.institute) : that.institute != null) return false;
         if (profession != null ? !profession.equals(that.profession) : that.profession != null) return false;
-        if (className != null ? !className.equals(that.className) : that.className != null) return false;
 
         return true;
     }
@@ -96,7 +85,6 @@ public class UserEntity {
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (institute != null ? institute.hashCode() : 0);
         result = 31 * result + (profession != null ? profession.hashCode() : 0);
-        result = 31 * result + (className != null ? className.hashCode() : 0);
         return result;
     }
 }

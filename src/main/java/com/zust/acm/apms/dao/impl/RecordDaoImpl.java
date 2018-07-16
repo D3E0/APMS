@@ -1,4 +1,4 @@
-package com.zust.acm.apms.dao;
+package com.zust.acm.apms.dao.impl;
 
 import com.zust.acm.apms.dao.RecordDao;
 import com.zust.acm.apms.entity.RecordEntity;
@@ -34,13 +34,34 @@ public class RecordDaoImpl implements RecordDao {
     }
 
     @Override
+    public List getRecordList(Timestamp time) {
+        Session session = factory.openSession();
+        session.beginTransaction();
+        Query query = session.createQuery("from RecordEntity where to_days(time)= to_days(:A)");
+        query.setParameter("A", time);
+        List list = query.list();
+        return list;
+    }
+
+//    @Override
+//    public List getRecords(Timestamp time) {
+//        Session session = factory.openSession();
+//        session.beginTransaction();
+//        Query query = session.createQuery("select username, userId, ifNull() from RecordEntity where to_days(time)= to_days(:A)");
+//        query.setParameter("A", time);
+//        List list = query.list();
+//        return list;
+//        return null;
+//    }
+
+    @Override
     public Integer verifyRecordByUserIdInDayTime(Timestamp time, String userId) {
         Session session = factory.openSession();
         Transaction ts = session.beginTransaction();
         try {
             Query query = session.createQuery("SELECT COUNT(*) FROM RecordEntity AS r " +
                     "WHERE to_days(r.time)= to_days(:A) and hour(r.time) between 0 AND 8 "
-                    +" AND r.userId = :B");
+                    + " AND r.user.userId = :B");
             query.setParameter("A", time);
             query.setParameter("B", userId);
             ts.commit();
@@ -57,7 +78,7 @@ public class RecordDaoImpl implements RecordDao {
         try {
             Query query = session.createQuery("SELECT COUNT(*) FROM RecordEntity AS r " +
                     "WHERE to_days(r.time)= to_days(:A) and hour(r.time) between 21 AND 23 "
-                    +" AND r.userId = :B");
+                    + " AND r.user.userId = :B");
             query.setParameter("A", time);
             query.setParameter("B", userId);
             ts.commit();
@@ -73,7 +94,7 @@ public class RecordDaoImpl implements RecordDao {
         Transaction ts = session.beginTransaction();
         Query query = session.createQuery("SELECT u.userName FROM UserEntity AS u, RecordEntity AS r" +
                 " WHERE to_days(r.time)= to_days(:A) and hour(r.time) between 0 AND 8" +
-                " AND u.userId = r.userId");
+                " AND u.userId = r.user.userId");
         query.setParameter("A", timestamp);
         List<String> userNames = query.list();
         ts.commit();
@@ -86,19 +107,20 @@ public class RecordDaoImpl implements RecordDao {
         Transaction ts = session.beginTransaction();
         Query query = session.createQuery("SELECT u.userName FROM UserEntity AS u, RecordEntity AS r" +
                 " WHERE to_days(r.time)= to_days(:A) and hour(r.time) between 21 AND 23" +
-                " AND u.userId = r.userId");
+                " AND u.userId = r.user.userId");
         query.setParameter("A", timestamp);
         List<String> userNames = query.list();
         ts.commit();
         return userNames;
     }
+
     @Override
     public List<String> findAlreadyOutTooEarlyByDay(Timestamp timestamp) {
         Session session = factory.openSession();
         Transaction ts = session.beginTransaction();
         Query query = session.createQuery("SELECT userName FROM UserEntity AS u WHERE userId NOT IN (" +
-                "SELECT r.userId From RecordEntity AS r WHERE to_days(r.time)= to_days(:A) " +
-                "AND hour(r.time) between 21 AND 23  AND u.userId = r.userId)");
+                "SELECT r.user.userId From RecordEntity AS r WHERE to_days(r.time)= to_days(:A) " +
+                "AND hour(r.time) between 21 AND 23  AND u.userId = r.user.userId)");
         query.setParameter("A", timestamp);
         List<String> userNames = query.list();
         ts.commit();
@@ -110,8 +132,8 @@ public class RecordDaoImpl implements RecordDao {
         Session session = factory.openSession();
         Transaction ts = session.beginTransaction();
         Query query = session.createQuery("SELECT userName FROM UserEntity AS u WHERE userId NOT IN (" +
-                "SELECT r.userId From RecordEntity AS r WHERE to_days(r.time)= to_days(:A) " +
-                "AND hour(r.time) between 0 AND 8  AND u.userId = r.userId)");
+                "SELECT r.user.userId From RecordEntity AS r WHERE to_days(r.time)= to_days(:A) " +
+                "AND hour(r.time) between 0 AND 8  AND u.userId = r.user.userId)");
         query.setParameter("A", timestamp);
         List<String> userNames = query.list();
         ts.commit();
