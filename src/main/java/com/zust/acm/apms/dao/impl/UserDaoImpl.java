@@ -42,6 +42,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     UserEntity getUserById(int userId){
-        
+
     }
 }
