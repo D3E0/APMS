@@ -7,10 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
+<head>
     <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+</head>
+<body>
+$END$
+<a href="register.jsp">人脸信息录入</a><br>
+<a href="signIn.jsp">签到、签退</a>
+</body>
 </html>
