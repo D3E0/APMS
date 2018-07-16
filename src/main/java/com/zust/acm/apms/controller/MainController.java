@@ -38,15 +38,23 @@ public class MainController {
     @GetMapping
     public String index(HttpSession session) {
         Calendar calendar = Calendar.getInstance();
-        int time = calendar.get(Calendar.HOUR);
+        int time = calendar.get(Calendar.HOUR_OF_DAY);
+        System.out.println("time = " + time);
         String status = "";
         if (time >= 0 && time <= 8) {
             status = "IN";
         } else if (time >= 21 && time <= 23) {
             status = "OUT";
         }
+        System.out.println("status = " + status);
         session.setAttribute("type", status);
         return "index";
+    }
+
+
+    @RequestMapping(value = "signIn", method = RequestMethod.GET)
+    public String sign() {
+        return "signIn";
     }
 
     /**
@@ -63,14 +71,15 @@ public class MainController {
         //得到当前时间
         Calendar calendar = Calendar.getInstance();
         Long now = calendar.getTimeInMillis();
-        int time = calendar.get(Calendar.HOUR);
+        int time = calendar.get(Calendar.HOUR_OF_DAY);
+        System.out.println("time = " + time);
         String status = "";
         if (time >= 0 && time <= 8) {
             status = "IN";
         } else if (time >= 21 && time <= 23) {
             status = "OUT";
         }
-        if ("IN".equals(status) || "OUT".equals(status)){
+        if ("IN".equals(status) || "OUT".equals(status)) {
             imgStr = imgStr.replaceFirst("data:image/jpeg;base64,", "");
             String id = faceManager.searchFace(imgStr);
             //存在相应用户
@@ -92,6 +101,11 @@ public class MainController {
     }
 
 
+    @RequestMapping("register")
+    public String register() {
+        return "register";
+    }
+
     /**
      * 照片上传
      *
@@ -104,17 +118,17 @@ public class MainController {
         JSONObject object = new JSONObject();
         object.put("code", 0);
         object.put("msg", "fail");
-        String userId = image.getName();
+        String userId = image.getOriginalFilename();
+        userId = userId.substring(0, userId.lastIndexOf('.'));
         System.out.println("userId = " + userId);
         try {
             File file = new File("D:\\upload", image.getOriginalFilename());
             image.transferTo(file);
             byte[] imgData = FileUtil.readFileByBytes(file.getAbsolutePath());
             String imgStr = Base64Util.encode(imgData);
-            boolean res = faceManager.updateFace(userId, imgStr);
-            if (res) {
-                object.put("msg", "success");
-            }
+            String res = faceManager.addface(userId, imgStr);
+            JSONObject resJson = JSONObject.parseObject(res);
+            object.put("msg", resJson.get("error_msg"));
         } catch (IOException e) {
             e.printStackTrace();
         }

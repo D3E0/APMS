@@ -13,12 +13,13 @@
     <title>Login</title>
     <link rel="stylesheet" href="<c:url value="/static/layui/css/layui.css"/>">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/signIn.css">
-    <script src="${pageContext.request.contextPath}/static/layui/layui.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/static/layui/layui.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/jquery.transit.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/capture.js"></script>
     <script>
         var contextPath = '${pageContext.request.contextPath}';
+        var type = '${type}';
     </script>
 </head>
 <body>
@@ -30,67 +31,40 @@
             </div>
         </div>
         <div class="layui-col-md5">
-            <div class="scene">
-                <div class="cube">
-                    <div class="side front" id="Front"></div>
-                    <div class="side back" id="Back"></div>
-                    <div class="side bottom" id="Bottom"></div>
-
-                    <div class="side top" id="Top" style="padding: 0">
-                        <video id="video" width=100% height="300"></video>
-                        <div class="navi">
-                            <%--<a href="javascript:myTransition(1, 300);myTransition(1, 300)">手机号登陆</a>--%>
-                            <%--<a href="javascript:myTransition(1, 500)">账号密码登陆</a>--%>
-                            <a href="<c:url value="/register"/>">立即注册</a>
-                        </div>
-                        <button id="start" class="layui-btn layui-btn-fluid ">开始签到</button>
-                    </div>
-
-
-                </div>
+            <div style="color: #009688; text-align: center; font-size: 24px; padding: 20px;margin-top: 20px">
+                签到
             </div>
+            <div style="color: #999; text-align: center; font-size: 14px;">
+                每天签到时间段为 08:00--09:00，签退时间段为 21:00--23:00
+            </div>
+            <video id="video" width=100% height="300" ></video>
+            <c:choose>
+                <c:when test="${type == 'IN'}">
+                    <button id="start" class="layui-btn layui-btn-fluid">
+                        人脸签到
+                    </button>
+                </c:when>
+                <c:when test="${type == 'OUT'}">
+                    <button id="start" class="layui-btn layui-btn-primary layui-btn-fluid">
+                        签退
+                    </button>
+                </c:when>
+                <c:otherwise>
+                    <button class="layui-btn layui-btn-disabled layui-btn-fluid" disabled>
+                        非签到、签退时间段
+                    </button>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>
+
 <canvas id="canvas" hidden width="400" height="360"></canvas>
 <script>
     var contextPath = '${pageContext.request.contextPath}';
     layui.use(['form', 'laydate', 'jquery', 'layer'], function () {
         var form = layui.form, $ = layui.jquery, layer = layui.layer;
     });
-    var $bottom = $("#Bottom");
-    var $front = $("#Front");
-    var $top = $("#Top");
-    var $back = $("#Back");
-    var myStatus = {top: 90, front: 0, bottom: -90, back: 0};
-
-    /**
-     *
-     * @param direction  动画方向，向上转 1；向下转 -1
-     * @param speed 动画速度
-     */
-    function myTransition(direction, speed) {
-
-        for (i in myStatus) {
-            myStatus[i] += 90 * direction;
-        }
-
-        $bottom.transition({
-            transform: "perspective(1200px) rotateX(" + myStatus.bottom + "deg)"
-        }, speed, 'linear');
-
-        $front.transition({
-            transform: "perspective(1200px) rotateX(" + myStatus.front + "deg)"
-        }, speed, 'linear');
-
-        $top.transition({
-            transform: "perspective(1200px) rotateX(" + myStatus.top + "deg)"
-        }, speed, 'linear');
-
-        $back.transition({
-            transform: "perspective(1200px) rotateX(" + myStatus.back + "deg) rotateY(180deg) rotateZ(180deg) "
-        }, speed, 'linear');
-    }
 </script>
 </body>
 </html>

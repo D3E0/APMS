@@ -13,10 +13,12 @@ layui.use(['laydate', 'form', 'layer', 'upload'], function () {
         , url: contextPath+'/user/upload' //上传接口
         , done: function (res) {
             //上传完毕回调
-            if (res.msg === "success") {
+            console.info(res)
+            if (res.msg === "SUCCESS") {
                 layer.msg("修改成功");
             } else {
                 layer.msg("似乎失败了呢，再试一次吧", {icon: 5});
+                console.info(res.msg)
             }
         }
         , error: function () {

@@ -11,8 +11,7 @@
     <title>$Title$</title>
 </head>
 <body>
-$END$
-<a href="register.jsp">人脸信息录入</a><br>
-<a href="signIn.jsp">签到、签退</a>
+<a href="/register">人脸信息录入</a><br>
+<a href="/signIn">签到、签退</a>
 </body>
 </html>
