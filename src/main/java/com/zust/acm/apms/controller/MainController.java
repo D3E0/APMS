@@ -96,11 +96,11 @@ public class MainController {
 
                 //判断是否今日有签到记录
                 if (recordDao.verifyRecordByUserIdInDayTime(new Timestamp(now), id) < 1) {
-                    recordDao.addRecord(new RecordEntity(userDao.(id), new Timestamp(now), request.getRemoteAddr()));
+                    recordDao.addRecord(new RecordEntity(userDao.getUserById(id), new Timestamp(now), request.getRemoteAddr()));
                 }
                 //判断是否今日有签退记录
                 if (recordDao.verifyRecordByUserIdInDayTime(new Timestamp(now), id) >= 1) {
-                    recordDao.addRecord(new RecordEntity(id, new Timestamp(now), request.getRemoteAddr()));
+                    recordDao.addRecord(new RecordEntity(userDao.getUserById(id), new Timestamp(now), request.getRemoteAddr()));
                 }
                 object.put("result", "success");
             }
@@ -113,6 +113,11 @@ public class MainController {
     @RequestMapping("register")
     public String register() {
         return "register";
+    }
+
+    @RequestMapping("record")
+    public String record() {
+        return "record";
     }
 
     /**
@@ -135,8 +140,9 @@ public class MainController {
             image.transferTo(file);
             byte[] imgData = FileUtil.readFileByBytes(file.getAbsolutePath());
             String imgStr = Base64Util.encode(imgData);
-            String res = faceManager.addface(userId, imgStr);
+            String res = faceManager.updateFace(userId, imgStr);
             JSONObject resJson = JSONObject.parseObject(res);
+            System.out.println("resJson = " + resJson);
             object.put("msg", resJson.get("error_msg"));
         } catch (IOException e) {
             e.printStackTrace();

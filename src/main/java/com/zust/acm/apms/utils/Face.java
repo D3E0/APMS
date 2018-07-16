@@ -29,7 +29,7 @@ public class Face {
             String imgStr2 = Base64Util.encode(imgData2);
             String imgParam2 = URLEncoder.encode(imgStr2, "UTF-8");
 
-            String param = "group_id=" + "12z" + "&user_top_num=" + "1" + "&face_top_num=" + "1" + "&images=" + imgParam + "," + imgParam2;
+            String param = "group_id=" + "acm" + "&user_top_num=" + "1" + "&face_top_num=" + "1" + "&images=" + imgParam + "," + imgParam2;
 
             // 注意这里仅为了简化编码每一次请求都去获取access_token，线上环境access_token有过期时间， 客户端可自行缓存，过期后重新获取。
             String accessToken = getAuth();
@@ -48,7 +48,7 @@ public class Face {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("image", imgStr);
-            map.put("group_id_list", "12z");
+            map.put("group_id_list", "acm");
             map.put("image_type", "BASE64");
             map.put("quality_control", "LOW");
 
@@ -126,7 +126,7 @@ public class Face {
     public static String dourl(String url,String userid, String img){
         try {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("group_id", "12z");
+            map.put("group_id", "acm");
             map.put("user_id", userid);
 //            map.put("user_info", "abc");
             if(img!=null){

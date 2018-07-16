@@ -53,8 +53,8 @@
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-filter="*" id="imgSubmit">提交修改</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <button class="layui-btn layui-btn-lg" lay-filter="*" id="imgSubmit">提交修改</button>
+                        <%--<button type="reset" class="layui-btn layui-btn-primary">重置</button>--%>
                     </div>
                 </div>
             </div>

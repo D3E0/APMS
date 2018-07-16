@@ -5,7 +5,7 @@ public interface FaceManager {
 
     String delface(String userid);
 
-    Boolean updateFace(String userid, String img);
+    String updateFace(String userid, String img);
 
     String searchFace(String img);
 }

@@ -23,11 +23,9 @@ public class FaceManagerImp implements FaceManager {
     }
 
     @Override
-    public Boolean updateFace(String userId, String img) {
+    public String updateFace(String userId, String img) {
         String url = surl + "update";
-        String result = Face.dourl(url, userId, img);
-        JSONObject object = JSON.parseObject(result);
-        return "SUCCESS".equals(object.get("error_msg"));
+        return Face.dourl(url, userId, img);
     }
 
     @Override

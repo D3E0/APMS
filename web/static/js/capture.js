@@ -33,7 +33,7 @@ layui.use(['layer'], function () {
             console.info(dataObj);
             if (dataObj.result === 'success') {
                 layer.msg("成功");
-                window.location.href = contextPath + '/home';
+                window.location.href = contextPath + '/record';
             } else {
                 layer.msg("似乎失败了呢，再试一次吧", {icon: 5});
             }

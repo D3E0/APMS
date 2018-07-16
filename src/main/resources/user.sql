@@ -26,7 +26,7 @@ CREATE TABLE `user` (
   `institute` varchar(255) DEFAULT NULL,
   `profession` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user
