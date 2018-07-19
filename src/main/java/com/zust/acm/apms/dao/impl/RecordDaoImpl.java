@@ -28,6 +28,7 @@ public class RecordDaoImpl implements RecordDao {
             session.save(record);
             ts.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -40,6 +41,7 @@ public class RecordDaoImpl implements RecordDao {
         Query query = session.createQuery("from RecordEntity where to_days(time)= to_days(:A)");
         query.setParameter("A", time);
         List list = query.list();
+        session.getTransaction().commit();
         return list;
     }
 

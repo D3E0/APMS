@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.zust.acm.apms.dao.RecordDao;
 import com.zust.acm.apms.dao.UserDao;
 import com.zust.acm.apms.entity.RecordEntity;
-import com.zust.acm.apms.entity.UserEntity;
 import com.zust.acm.apms.manager.FaceManager;
 import com.zust.acm.apms.utils.Base64Util;
 import com.zust.acm.apms.utils.FileUtil;
@@ -40,7 +39,14 @@ public class MainController {
     }
 
     @GetMapping
-    public String index(HttpSession session) {
+    public String index() {
+        return "index";
+    }
+
+
+    @RequestMapping(value = "signIn", method = RequestMethod.GET)
+    public String sign(HttpSession session) {
+
         Calendar calendar = Calendar.getInstance();
         int time = calendar.get(Calendar.HOUR_OF_DAY);
         System.out.println("time = " + time);
@@ -52,12 +58,6 @@ public class MainController {
         }
         System.out.println("status = " + status);
         session.setAttribute("type", status);
-        return "index";
-    }
-
-
-    @RequestMapping(value = "signIn", method = RequestMethod.GET)
-    public String sign() {
         return "signIn";
     }
 
@@ -67,7 +67,7 @@ public class MainController {
      * @param imgStr
      * @return
      */
-    @PostMapping("/signIn")
+    @RequestMapping("/process")
     @ResponseBody
     public String processSignInByFace(@RequestParam(value = "img") String imgStr, HttpServletRequest request) {
         JSONObject object = new JSONObject();
@@ -96,11 +96,15 @@ public class MainController {
 
                 //判断是否今日有签到记录
                 if (recordDao.verifyRecordByUserIdInDayTime(new Timestamp(now), id) < 1) {
+                    System.out.println("签到");
+                    System.out.println("ip = " + request.getRemoteAddr());
                     recordDao.addRecord(new RecordEntity(userDao.getUserById(id), new Timestamp(now), request.getRemoteAddr()));
                 }
                 //判断是否今日有签退记录
                 if (recordDao.verifyRecordByUserIdInDayTime(new Timestamp(now), id) >= 1) {
-                    recordDao.addRecord(new RecordEntity(userDao.getUserById(id), new Timestamp(now), request.getRemoteAddr()));
+                    System.out.println("签退");
+                    System.out.println("ip = " + request.getRemoteAddr());
+                   recordDao.addRecord(new RecordEntity(userDao.getUserById(id), new Timestamp(now), request.getRemoteAddr()));
                 }
                 object.put("result", "success");
             }
@@ -135,8 +139,9 @@ public class MainController {
         String userId = image.getOriginalFilename();
         userId = userId.substring(0, userId.lastIndexOf('.'));
         System.out.println("userId = " + userId);
+
         try {
-            File file = new File("D:\\upload", image.getOriginalFilename());
+            File file = new File("/home/lance/upload", image.getOriginalFilename());
             image.transferTo(file);
             byte[] imgData = FileUtil.readFileByBytes(file.getAbsolutePath());
             String imgStr = Base64Util.encode(imgData);

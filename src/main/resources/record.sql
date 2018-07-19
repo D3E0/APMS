@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `record`;
 CREATE TABLE `record` (
   `userId` varchar(255) NOT NULL,
-  `time` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `time` timestamp NOT NULL ,
   `ip` varchar(255) DEFAULT NULL,
   `recordId` varchar(255) NOT NULL,
   PRIMARY KEY (`recordId`)

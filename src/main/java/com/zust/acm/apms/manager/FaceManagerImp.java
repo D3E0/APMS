@@ -40,7 +40,7 @@ public class FaceManagerImp implements FaceManager {
         jsonObject = array.getJSONObject(0);
         double ans = jsonObject.getDouble("score");
         String userId = jsonObject.getString("user_id");
-        if (ans > 80) {
+        if (ans > 70) {
             return userId;
         } else {
             return null;

@@ -26,7 +26,7 @@ layui.use(['layer'], function () {
         context.drawImage(video, 0, 0, 400, 360);
         var data = canvas.toDataURL("image/jpeg");
         // console.info(data);
-        $.post(contextPath + '/signIn', {img: data}, function (obj) {
+        $.post(contextPath + '/process', {img: data}, function (obj) {
             layer.close(index);
             stopStreamedVideo();
             var dataObj = eval("(" + obj + ")");

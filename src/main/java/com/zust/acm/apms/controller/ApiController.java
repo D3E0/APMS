@@ -70,7 +70,7 @@ public class ApiController {
                 calendar.setTime(new Date(time.getTime()));
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
                 String dataStr = sdf.format(recordEntity.getTime());
-                System.out.println("dataStr = " + dataStr);
+//                System.out.println("dataStr = " + dataStr);
                 if (hour >= 7 && hour <= 8) {
                     userView.setInTime(dataStr);
                 } else if (hour >= 21 && hour <= 23) {
@@ -90,14 +90,14 @@ public class ApiController {
         for (String userId : userViewMap.keySet()) {
             UserView userView = userViewMap.get(userId);
             if (userView.getInTime() == null) {
-                if (time >= 0 && time <= 6 && day == date.getDay()) {
+                if (time >= 0 && time <= 6 && day == date.getDate()) {
                     userView.setInTime("没开始");
                 } else {
                     userView.setInTime("未签到");
                 }
             }
             if (userView.getOutTime() == null) {
-                if (time >= 0 && time <= 20 && day == date.getDay()) {
+                if (time >= 0 && time <= 20 && day == date.getDate()) {
                     userView.setOutTime("没开始");
                 } else {
                     userView.setOutTime("未签到");

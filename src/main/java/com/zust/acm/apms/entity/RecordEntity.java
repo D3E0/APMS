@@ -54,8 +54,8 @@ public class RecordEntity {
     }
 
     @Id
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(generator="system_uuid")
+    @GenericGenerator(name="system_uuid",strategy="uuid")
     @Column(name = "recordId")
     public String getRecordId() {
         return recordId;
